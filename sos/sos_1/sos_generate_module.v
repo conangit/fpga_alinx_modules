@@ -28,11 +28,16 @@ module sos_generate_module(
     input RST_n;
     output [1:0] Pin_Out;
     
-    wire isEn;
+    wire isEn_buzzer;
+    wire isEn_led;
     
-    control_module C0(.CLK(CLK), .RST_n(RST_n), .SOS_En(isEn));
-    sos_module_buzzer S0(.CLK(CLK), .RST_n(RST_n), .SOS_En(isEn), .Pin_Out(Pin_Out[0]));
-    sos_modul_led S1(.CLK(CLK), .RST_n(RST_n), .SOS_En(isEn), .Pin_Out(Pin_Out[1]));
+    //buzzer
+    control_buzzer_module C0(.CLK(CLK), .RST_n(RST_n), .SOS_En(isEn_buzzer));
+    sos_module_buzzer S0(.CLK(CLK), .RST_n(RST_n), .SOS_En(isEn_buzzer), .Pin_Out(Pin_Out[0]));
+    
+    //led
+    control_led_module C1(.CLK(CLK), .RST_n(RST_n), .SOS_En(isEn_led));
+    sos_modul_led S1(.CLK(CLK), .RST_n(RST_n), .SOS_En(isEn_led), .Pin_Out(Pin_Out[1]));
 
 
 endmodule

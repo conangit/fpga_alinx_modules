@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module control_module(
+module control_led_module(
     CLK,
     RST_n,
     SOS_En
@@ -28,9 +28,7 @@ module control_module(
     input RST_n;
     output reg SOS_En;
     
-    //buzzer:100ms * 6 + 300ms * 3 + 50ms * 9 = 1.95s
     //led: 1s * 6 + 3s * 3 + 0.5s * 9 = 19.5s
-    //parameter T3S = 28'd149_999_999;
     parameter T20S = 30'd999_999_999;
     
     reg [29:0] count;
@@ -38,11 +36,11 @@ module control_module(
     always @(posedge CLK or negedge RST_n) begin
         if (!RST_n) begin
             SOS_En <= 1'b0;
-            count <= 28'd0;
+            count <= 30'd0;
         end
         else if (count == T20S) begin
             SOS_En <= 1'b1;
-            count <= 28'd0;
+            count <= 30'd0;
         end
         else begin
             SOS_En <= 1'b0;

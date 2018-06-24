@@ -6,7 +6,7 @@ NET RST_n LOC = L3 | IOSTANDARD = "LVCMOS33";
 
 
 //buzzer
-NET Pin_Out[0] LOC = J1 | IOSTANDARD = "LVCMOS33";
+NET Pin_Out[0] LOC = J11 | IOSTANDARD = "LVCMOS33";
 
 //led
 NET Pin_Out[1] LOC = P4 | IOSTANDARD = "LVCMOS33";
