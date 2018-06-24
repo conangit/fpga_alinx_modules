@@ -1,0 +1,16 @@
+
+NET CLK LOC = T8 | TNM_NET = sys_clk_pin | IOSTANDARD = "LVCMOS33";
+TIMESPEC TS_sys_clk_pin = PERIOD sys_clk_pin 50000kHz;
+
+NET RST_n LOC = L3 | IOSTANDARD = "LVCMOS33";
+
+//key
+NET Pin_In LOC = C3 | IOSTANDARD = "LVCMOS33";
+
+//buzzer
+NET Pin_Out[0] LOC = J11 | IOSTANDARD = "LVCMOS33";
+
+//led
+NET Pin_Out[1] LOC = P4 | IOSTANDARD = "LVCMOS33";
+
+
