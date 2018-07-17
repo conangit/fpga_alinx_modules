@@ -5,13 +5,13 @@ TIMESPEC TS_sys_clk_pin = PERIOD sys_clk_pin 50000kHz;
 
 NET RST_n LOC = L3 | IOSTANDARD = "LVCMOS33";
 
-//leds
+# leds
 NET leds[0] LOC = P4 | IOSTANDARD = "LVCMOS33";
 NET leds[1] LOC = N5 | IOSTANDARD = "LVCMOS33";
 NET leds[2] LOC = P5 | IOSTANDARD = "LVCMOS33";
 NET leds[3] LOC = M6 | IOSTANDARD = "LVCMOS33";
 
-//keys
+# keys
 NET keys[0] LOC = C3 | IOSTANDARD = "LVCMOS33";
 NET keys[1] LOC = D3 | IOSTANDARD = "LVCMOS33";
 NET keys[2] LOC = E4 | IOSTANDARD = "LVCMOS33";
