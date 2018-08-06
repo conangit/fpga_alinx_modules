@@ -83,6 +83,7 @@ module tx_control_module(
                     end
                 end
                 
+                /*
                 4'd11:
                 begin
                     if (BPS_CLK) begin
@@ -98,14 +99,28 @@ module tx_control_module(
                         isDone <= 1'b0;
                     end
                 end
+                */
                 
+                4'd11:
+                begin
+                    i <= i + 1'b1;
+                    isDone <= 1'b1;
+                end
+
+                4'd12:
+                begin
+                    i <= 4'd0;
+                    isDone <= 1'b0;
+                end
             endcase
         end
+        /*
         else begin
             i <= 4'd0;
             rTx <= 1'b1;
             isDone <= 1'b0;
         end
+        */
     end
 
     assign Tx_Done_Sig = isDone;
