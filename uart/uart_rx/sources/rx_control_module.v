@@ -93,6 +93,17 @@ module rx_control_module(
                     end
                 end
 
+                /*
+                 * 本质上i <= 1'b0;永远不会执行13态处 电路从0态开始将永远停留在13态 12态之后BPS_CLK将不会再产生
+                 * 但由于"多写了else语句,在control_module.v中Rx_En_Sig无效时 让i回到0态"
+                 * 可以预测，当把else语句块去除后 rx模块将只能接收一帧数据
+                 *
+                 * 注意：本质上也不该写else语句块
+                 * ①case仿顺序操作应该自行执行13态，然后回到0态
+                 * ②接收数据总线Rx_Data，除非复位回到0x00，否则应该保留电路最后一帧数据状态
+                 */
+
+                /*
                 4'd12:   // 一帧数据采集完成
                 begin
                     if (BPS_CLK) begin
@@ -102,21 +113,37 @@ module rx_control_module(
                     end
                 end
                 
-                4'd13:   // 一帧数据采集完成
+                4'd13:   // 回到初态
                 begin
                     if (BPS_CLK) begin
                         i <= 1'b0;
                         isDone <= 1'b0;
                     end
                 end
+                */
+                
+                4'd12:   // 一帧数据采集完成
+                begin
+                    i <= i + 1'b1;
+                    isCount <= 1'b0;
+                    isDone <= 1'b1;
+                end
+                
+                4'd13:   // 回到初态
+                begin
+                    i <= 1'b0;
+                    isDone <= 1'b0;
+                end
             endcase
         end
+        /*
         else begin    // Rx_En_Sig无效时
             i <= 4'd0;
             rData <= 8'd0;
             isCount <= 1'b0;
             isDone <= 1'b0;
         end
+        */
     end
     
     assign Count_Sig = isCount;
