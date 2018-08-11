@@ -14,8 +14,8 @@ module vga_control_module(
     input vga_clk;
     input rst_n;
     input Ready_Sig;
-    input [10:0]Column_Addr_Sig;
-    input [10:0]Row_Addr_Sig;
+    input [11:0]Column_Addr_Sig;
+    input [11:0]Row_Addr_Sig;
     
     output [4:0]Red_Sig;
     output [5:0]Green_Sig;
@@ -38,22 +38,22 @@ module vga_control_module(
             w_Green_Sig <= 6'b00_0000;
             w_Blue_Sig  <= 5'b0_0000;
         end
-        else if (Ready_Sig && (11'd0 <= Column_Addr_Sig && Row_Addr_Sig < 11'd100)) begin // 0 * 100的区域 红绿蓝混合为白色
+        else if (Ready_Sig && (12'd0 <= Column_Addr_Sig && Row_Addr_Sig < 12'd100)) begin // 0 * 100的区域 红绿蓝混合为白色
             w_Red_Sig   <= 5'b1_1111;
             w_Green_Sig <= 6'b11_1111;
             w_Blue_Sig  <= 5'b1_1111;
         end
-        else if (Ready_Sig && (11'd0 <= Column_Addr_Sig && 11'd100 <= Row_Addr_Sig && Row_Addr_Sig < 11'd200)) begin // 红色
+        else if (Ready_Sig && (12'd0 <= Column_Addr_Sig && 12'd100 <= Row_Addr_Sig && Row_Addr_Sig < 12'd200)) begin // 红色
             w_Red_Sig   <= 5'b1_1111;
             w_Green_Sig <= 6'b00_0000;
             w_Blue_Sig  <= 5'b0_0000;
         end
-        else if (Ready_Sig && (11'd0 <= Column_Addr_Sig && 11'd200 <= Row_Addr_Sig && Row_Addr_Sig < 11'd300)) begin // 绿色
+        else if (Ready_Sig && (12'd0 <= Column_Addr_Sig && 12'd200 <= Row_Addr_Sig && Row_Addr_Sig < 12'd300)) begin // 绿色
             w_Red_Sig   <= 5'b0_0000;
             w_Green_Sig <= 6'b11_1111;
             w_Blue_Sig  <= 5'b0_0000;
         end
-        else if (Ready_Sig && (11'd0 <= Column_Addr_Sig && 11'd300 <= Row_Addr_Sig && Row_Addr_Sig < 11'd400)) begin // 蓝色
+        else if (Ready_Sig && (12'd0 <= Column_Addr_Sig && 12'd300 <= Row_Addr_Sig && Row_Addr_Sig < 12'd400)) begin // 蓝色
             w_Red_Sig   <= 5'b0_0000;
             w_Green_Sig <= 6'b00_0000;
             w_Blue_Sig  <= 5'b1_1111;

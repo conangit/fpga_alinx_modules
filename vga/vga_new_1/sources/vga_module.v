@@ -31,8 +31,8 @@ module vga_module(
     wire clocked;
     wire clk_out;
     wire isReady;
-    wire [10:0]x_addr;
-    wire [10:0]y_addr;
+    wire [11:0]x_addr;
+    wire [11:0]y_addr;
     
     
     pll_ip pll_ip_inst(
