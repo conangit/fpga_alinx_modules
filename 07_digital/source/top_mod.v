@@ -34,7 +34,8 @@ module top_mod(
     number_mod Num(
         .CLK(CLK),
         .RST_n(RST_n),
-        .data_in(data_in),
+        // .data_in(data_in),
+        .data_in(8'd75),
         .ten_data(w_ten),
         .one_data(w_one)
     );

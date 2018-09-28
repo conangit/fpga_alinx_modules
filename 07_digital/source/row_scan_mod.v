@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    16:05:54 06/24/2018 
+// Create Date:    16:05:10 06/24/2018 
 // Design Name: 
-// Module Name:    column_scan_mod 
+// Module Name:    row_scan_mod 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,19 +18,23 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module column_scan_mod(
+module row_scan_mod(
     CLK,
     RST_n,
-    Column_Scan_Sig
+    ten_encode_in,
+    one_encode_in,
+    Row_Scan_Sig
     );
     
     input  CLK;
     input  RST_n;
-    output reg [5:0] Column_Scan_Sig;
-
-    //每隔10ms使能不同的数码管 -- 低电平有效
+    input  [7:0] ten_encode_in;
+    input  [7:0] one_encode_in;
+    output reg [7:0] Row_Scan_Sig;
+    
+    //每隔10ms输出不同的encode_smg码
     parameter T10MS = 19'd499_999;
-
+    
     /*
     reg [18:0] count;
     
@@ -56,7 +60,7 @@ module column_scan_mod(
         if (!RST_n) begin
             i <= 1'b0;
             isCount <= 1'b0;
-            Column_Scan_Sig <= 6'b11_1111;
+            Row_Scan_Sig <= one_encode_in;
         end
         else begin
             case (i)
@@ -68,7 +72,7 @@ module column_scan_mod(
                     end
                     else begin
                         isCount <= 1'b1;
-                        Column_Scan_Sig <= 6'b11_1110;
+                        Row_Scan_Sig <= one_encode_in;
                     end
                 end
                 
@@ -80,7 +84,7 @@ module column_scan_mod(
                     end
                     else begin
                         isCount <= 1'b1;
-                        Column_Scan_Sig <= 6'b11_1101;
+                        Row_Scan_Sig <= ten_encode_in;
                     end
                 end
             endcase
@@ -118,15 +122,15 @@ module column_scan_mod(
     
     always @(posedge CLK or negedge RST_n) begin
         if (!RST_n) begin
-            Column_Scan_Sig <= 6'b11_1111;
+            Row_Scan_Sig <= one_encode_in;
         end
         else begin
             case (t)
-            2'd0: Column_Scan_Sig <= 6'b11_1110;
-            2'd1: Column_Scan_Sig <= 6'b11_1101;
-            default: Column_Scan_Sig <= 6'b11_1111;
+            2'd0: Row_Scan_Sig <= one_encode_in; //第一个10ms编码个位
+            2'd1: Row_Scan_Sig <= ten_encode_in; //第二个10ms编码十位
+            default: Row_Scan_Sig <= one_encode_in;
             endcase
         end
     end
-
+    
 endmodule
