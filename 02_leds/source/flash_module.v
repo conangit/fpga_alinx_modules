@@ -19,7 +19,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module flash_module(
-    CLK, RST_n, LED_Out
+    CLK,
+    RST_n,
+    LED_Out
     );
     
     input CLK;
@@ -50,9 +52,7 @@ module flash_module(
             rLED_Out <= 1'b0;
         end
         else if (counter == T1S) begin
-            rLED_Out <= ~rLED_Out;
-        end
-        else begin
+            rLED_Out <= ~rLED_Out;      //%50Õ¼¿Õ±ÈÊä³ö
         end
     end
     

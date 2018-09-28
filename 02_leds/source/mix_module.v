@@ -19,7 +19,10 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module mix_module(
-    CLK, RST_n, flash_led, run_led
+    CLK,
+    RST_n,
+    flash_led,
+    run_led
     );
     
     input CLK;
