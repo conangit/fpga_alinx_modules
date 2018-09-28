@@ -60,8 +60,9 @@ module sos_modul_led(
         end
     end
     
-    //SOS . . . _ _ _ . . . (stop)
-    //用LED模拟蜂鸣器 1点亮LED
+    // SOS . . . _ _ _ . . . (stop)
+    // 用LED模拟蜂鸣器 1点亮LED
+    // 各个信号的停留时间为:1s 0.5s 3s
     reg isCount;
     reg [4:0] i;
     

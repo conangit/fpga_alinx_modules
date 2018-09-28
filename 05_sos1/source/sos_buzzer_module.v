@@ -60,7 +60,8 @@ module sos_module_buzzer(
         end
     end
     
-    //SOS . . . _ _ _ . . . (stop)
+    // SOS . . . _ _ _ . . . (stop)
+    // 各个信号的停留时间为:100ms 50ms 300ms
     reg isCount;
     reg [4:0] i;
     

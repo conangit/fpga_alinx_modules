@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module sos_generate_module(
+module top_module(
     CLK,
     RST_n,
     Pin_Out
