@@ -1,9 +1,9 @@
 ## CLK
-NET CLK LOC = T8 | TNM_NET = sys_clk_pin | IOSTANDARD = "LVCMOS33";
+NET clk LOC = T8 | TNM_NET = sys_clk_pin | IOSTANDARD = "LVCMOS33";
 TIMESPEC TS_sys_clk_pin = PERIOD sys_clk_pin 50000kHz;
 
 ## RSTn
-NET RSTn LOC = L3 | IOSTANDARD = "LVCMOS33";
+NET rst_n LOC = L3 | IOSTANDARD = "LVCMOS33";
 
 #####################################################################
 
@@ -13,27 +13,20 @@ NET RSTn LOC = L3 | IOSTANDARD = "LVCMOS33";
 # NET leds<1> LOC = P5 | IOSTANDARD = "LVCMOS33"; # led2
 # NET leds<0> LOC = M6 | IOSTANDARD = "LVCMOS33"; # led3
 
-#####################################################################
-
 ## KEY
 # NET key_in<0> LOC = C3 | IOSTANDARD = "LVCMOS33"; # key1
 # NET key_in<1> LOC = D3 | IOSTANDARD = "LVCMOS33"; # key2
 # NET key_in<2> LOC = E4 | IOSTANDARD = "LVCMOS33"; # key3
 # NET key_in<3> LOC = E3 | IOSTANDARD = "LVCMOS33"; # key4
 
-#####################################################################
 
 ## buzzer
-# NET buzzer LOC = J11 | IOSTANDARD = "LVCMOS33";
-
-#####################################################################
+NET pin_out LOC = J11 | IOSTANDARD = "LVCMOS33";
 
 ## RTC
 # NET rtc_rst  LOC = C13 | IOSTANDARD = "LVCMOS33";
 # NET rtc_sclk LOC = E13 | IOSTANDARD = "LVCMOS33";
 # NET rtc_sio  LOC = D14 | IOSTANDARD = "LVCMOS33";
-
-#####################################################################
 
 ## Digital
 # NET smg_data[7] LOC = C6 | IOSTANDARD = "LVCMOS33";
@@ -53,5 +46,5 @@ NET RSTn LOC = L3 | IOSTANDARD = "LVCMOS33";
 # NET scan_sig[1] LOC = E8  | IOSTANDARD = "LVCMOS33";
 # NET scan_sig[0] LOC = D8  | IOSTANDARD = "LVCMOS33";
 
-#####################################################################
+
 
