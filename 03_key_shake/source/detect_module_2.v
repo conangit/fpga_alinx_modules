@@ -19,7 +19,11 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module detect_module_2(
-    CLK, RST_n, Pin_In, H2L_Sig, L2H_Sig
+    CLK,
+    RST_n,
+    Pin_In,
+    H2L_Sig,
+    L2H_Sig
     );
     
     input CLK;

@@ -53,5 +53,8 @@ module top_module(
     always @(*) begin
         leds <= {led3, led2, led1, led0};
     end
+    
+    // 不需要输出寄存器化
+    // assign leds = {led3, led2, led1, led0};
 
 endmodule

@@ -19,7 +19,11 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module detect_module(
-    CLK, RST_n, Pin_In, H2L_Sig, L2H_Sig
+    CLK,
+    RST_n,
+    Pin_In,
+    H2L_Sig,
+    L2H_Sig
     );
 
     input CLK;
@@ -34,6 +38,7 @@ module detect_module(
     reg isEn;
     
     //电平检测是敏感模块 在复位瞬间 电平易处于不稳定状态 故延时100us
+    //counter将"永远"停留在T100US(不存在溢出问题) isEN恒为1
     always @(posedge CLK or negedge RST_n) begin
         if (!RST_n) begin
             counter <= 13'd0;
@@ -74,6 +79,6 @@ module detect_module(
     //L2H_F1记录当前电平 L2H_F2记录前一时刻电平
     //当前为1 前一时间为0 -- 检测到L2H
     assign L2H_Sig = isEn ? (!L2H_F2 & L2H_F1) : 1'b0;
-    
+
 
 endmodule

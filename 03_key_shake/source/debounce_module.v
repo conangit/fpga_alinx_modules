@@ -30,7 +30,6 @@ module debounce_module(
     
     // detect_module D1(.CLK(CLK), .RST_n(RST_n), .Pin_In(Pin_In), .H2L_Sig(w_h2l), .L2H_Sig(w_l2h));
     detect_module_2 D2(.CLK(CLK), .RST_n(RST_n), .Pin_In(Pin_In), .H2L_Sig(w_h2l), .L2H_Sig(w_l2h));
-    // detect_module_3 D3(.CLK(CLK), .RST_n(RST_n), .Pin_In(Pin_In), .H2L_Sig(w_h2l), .L2H_Sig(w_l2h));
 
     delay_module T1(.CLK(CLK), .RST_n(RST_n), .H2L_Sig(w_h2l), .L2H_Sig(w_l2h), .Pin_Out(Pin_Out));
 

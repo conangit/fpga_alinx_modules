@@ -19,7 +19,11 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module delay_module(
-    CLK, RST_n, H2L_Sig, L2H_Sig, Pin_Out 
+    CLK,
+    RST_n,
+    H2L_Sig,
+    L2H_Sig,
+    Pin_Out
     );
     
     input CLK;
@@ -74,8 +78,10 @@ module delay_module(
             Pin_Out <= 1'b0;
             i <= 2'd0;
         end
-        else begin
+        else
+            
             case (i)
+                
                 2'd0:
                 begin
                     if (H2L_Sig) i <= 2'd1;
@@ -105,8 +111,8 @@ module delay_module(
                         isCounter <= 1'b1;
                     end
                 end
+                
             endcase
-        end
     end
 
 endmodule
