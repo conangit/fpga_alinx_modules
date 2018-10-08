@@ -28,7 +28,7 @@ module vga_module(
     output [4:0]Blue_Sig
     );
     
-    wire clocked;
+    
     wire clk_out;
     wire isReady;
     wire [11:0]x_addr;
@@ -38,8 +38,7 @@ module vga_module(
     pll_ip pll_ip_inst(
         .CLK_IN1(clk),
         .CLK_OUT1(clk_out),
-        .RESET(~rst_n),
-        .LOCKED(clocked)
+        .RESET(~rst_n)
     );
 
     vga_control_module C1(
@@ -77,7 +76,7 @@ module vga_module(
     );
     */
     
-    /*
+    
     vga_sync_module_640_480_60 S3(
         .vga_clk(clk_out),
         .rst_n(rst_n),
@@ -87,7 +86,7 @@ module vga_module(
         .Column_Addr_Sig(x_addr),
         .Row_Addr_Sig(y_addr)
     );
-    */
+    
     
     /*
     vga_sync_module_640_480_75 S4(
@@ -125,6 +124,7 @@ module vga_module(
     );
     */
 
+    /*
     vga_sync_module_1920_1080_60 S7(
         .vga_clk(clk_out),
         .rst_n(rst_n),
@@ -134,7 +134,7 @@ module vga_module(
         .Column_Addr_Sig(x_addr),
         .Row_Addr_Sig(y_addr)
     );
-    
+    */
     
 
 
