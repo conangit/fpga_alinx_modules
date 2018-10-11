@@ -50,6 +50,7 @@ module vga_module(
     );
     
     
+    /*
     vga_sync_module_800_600_60 S1(
         .vga_clk(clk_out),
         .rst_n(rst_n),
@@ -59,7 +60,25 @@ module vga_module(
         .Column_Addr_Sig(x_addr),
         .Row_Addr_Sig(y_addr)
     );
+    */
     
+    vga_sync_module_640_480_60 S2(
+        .vga_clk(clk_out),
+        .rst_n(rst_n),
+        .VSYNC_Sig(VSYNC_Sig),
+        .HSYNC_Sig(HSYNC_Sig),
+        .Ready_Sig(isReady),
+        .Column_Addr_Sig(x_addr),
+        .Row_Addr_Sig(y_addr)
+    );
+    
+    rom_module rom(
+        .clk(clk_out),
+        .rom_addr(rom_addr),
+        .red_rom_data(red_rom_data),
+        .green_rom_data(green_rom_data),
+        .blue_rom_data(blue_rom_data)
+    );
     
     vga_control_module C1(
         .vga_clk(clk_out),
@@ -69,12 +88,12 @@ module vga_module(
         .Row_Addr_Sig(y_addr),
         .Red_Sig(Red_Sig),
         .Green_Sig(Green_Sig),
-        .Blue_Sig(Blue_Sig)
-        .rom_addr(rom_addr);
+        .Blue_Sig(Blue_Sig),
+        .rom_addr(rom_addr),
         .red_rom_data(red_rom_data),
         .green_rom_data(green_rom_data),
         .blue_rom_data(blue_rom_data)
-    )
+    );
     
     
 endmodule
