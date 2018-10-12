@@ -67,7 +67,7 @@ module tx_control_module(
                     end
                 end
                 
-                4'd9: // 校验位--什么也不做
+                4'd9: // 停止位
                 begin
                     if (BPS_CLK) begin
                         i <= i + 1'b1;
@@ -75,52 +75,20 @@ module tx_control_module(
                     end
                 end
                 
-                4'd10: // 停止位
-                begin
-                    if (BPS_CLK) begin
-                        i <= i + 1'b1;
-                        rTx <= 1'b1;
-                    end
-                end
-                
-                /*
-                4'd11:
-                begin
-                    if (BPS_CLK) begin
-                        i <= i + 1'b1;
-                        isDone <= 1'b1;
-                    end
-                end
-
-                4'd12:
-                begin
-                    if (BPS_CLK) begin
-                        i <= 4'd0;
-                        isDone <= 1'b0;
-                    end
-                end
-                */
-                
-                4'd11:
+                4'd10:
                 begin
                     i <= i + 1'b1;
                     isDone <= 1'b1;
                 end
 
-                4'd12:
+                4'd11:
                 begin
                     i <= 4'd0;
                     isDone <= 1'b0;
                 end
+                
             endcase
         end
-        /*
-        else begin
-            i <= 4'd0;
-            rTx <= 1'b1;
-            isDone <= 1'b0;
-        end
-        */
     end
 
     assign Tx_Done_Sig = isDone;

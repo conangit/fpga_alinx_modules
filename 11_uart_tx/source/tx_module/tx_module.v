@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    00:17:55 08/03/2018 
+// Create Date:    23:47:50 08/02/2018 
 // Design Name: 
-// Module Name:    tx_demo 
+// Module Name:    tx_module 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,32 +18,46 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module tx_demo(
-    input CLK,
-    input RST_n,
-    output Tx_Pin_Out
+module tx_module(
+    CLK,
+    RST_n,
+    Tx_En_Sig,
+    Tx_Data,
+    Tx_Done_Sig,
+    Tx_Pin_Out
     );
     
-    wire Tx_En_Sig;
-    wire [7:0] tData;
-    wire Tx_Done_Sig;
+    parameter BPS_9600   = 13'd5208;
+    parameter BPS_115200 = 13'd434;
     
-    control_module U1(
+    input CLK;
+    input RST_n;
+    
+    input Tx_En_Sig;
+    input [7:0]Tx_Data;
+    
+    output Tx_Done_Sig;
+    output Tx_Pin_Out;
+    
+    wire BPS_CLK;
+
+    tx_bps_module #(.BPS(BPS_115200))
+    U1(
         .CLK(CLK),
         .RST_n(RST_n),
-        .Tx_Done_Sig(Tx_Done_Sig),
-        .Tx_En_Sig(Tx_En_Sig),
-        .Tx_Data(tData)
+        .Count_Sig(Tx_En_Sig),
+        .BPS_CLK(BPS_CLK)
     );
     
-    tx_module U2(
+    tx_control_module
+    U2(
         .CLK(CLK),
         .RST_n(RST_n),
         .Tx_En_Sig(Tx_En_Sig),
-        .Tx_Data(tData),
+        .Tx_Data(Tx_Data),
+        .BPS_CLK(BPS_CLK),
         .Tx_Done_Sig(Tx_Done_Sig),
         .Tx_Pin_Out(Tx_Pin_Out)
     );
-
 
 endmodule
