@@ -31,15 +31,15 @@ module rx_demo(
     wire [7:0]Output_Data;
     
     rx_module U1(
-    .CLK(CLK),
-    .RST_n(RST_n),
-    .Rx_Pin_In(Rx_Pin_In),
-    .Rx_En_Sig(Rx_En_Sig),
-    .Rx_Done_Sig(Rx_Done_Sig),
-    .Rx_Data(Rx_Data)
+        .CLK(CLK),
+        .RST_n(RST_n),
+        .Rx_Pin_In(Rx_Pin_In),
+        .Rx_En_Sig(Rx_En_Sig),
+        .Rx_Done_Sig(Rx_Done_Sig),
+        .Rx_Data(Rx_Data)
     );
     
-    control_module U2(
+    demo_control_module U2(
         .CLK(CLK),
         .RST_n(RST_n),
         .Rx_Done_Sig(Rx_Done_Sig),

@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module control_module(
+module demo_control_module(
     CLK,
     RST_n,
     Rx_Done_Sig,
