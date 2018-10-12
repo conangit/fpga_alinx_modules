@@ -27,7 +27,12 @@ module rx_module(
     output [7:0]Rx_Data
     );
     
+    parameter BPS_9600   = 13'd5208;
+    parameter BPS_115200 = 13'd434;
+    
     wire H2L_Sig;
+    wire Count_Sig;
+    wire BPS_CLK;
     
     detect_module U1(
         .CLK(CLK),
@@ -36,10 +41,7 @@ module rx_module(
         .H2L_Sig(H2L_Sig)
     );
     
-    wire Count_Sig;
-    wire BPS_CLK;
-    
-    rx_bps_module U2(
+    rx_bps_module #(.BPS(BPS_115200)) U2(
         .CLK(CLK),
         .RST_n(RST_n),
         .Count_Sig(Count_Sig),

@@ -27,6 +27,9 @@ module tx_module(
     Tx_Pin_Out
     );
     
+    parameter BPS_9600   = 13'd5208;
+    parameter BPS_115200 = 13'd434;
+    
     input CLK;
     input RST_n;
     
@@ -38,14 +41,16 @@ module tx_module(
     
     wire BPS_CLK;
 
-    tx_bps_module U1(
+    tx_bps_module #(.BPS(BPS_115200))
+    U1(
         .CLK(CLK),
         .RST_n(RST_n),
         .Count_Sig(Tx_En_Sig),
         .BPS_CLK(BPS_CLK)
     );
     
-    tx_control_module U2(
+    tx_control_module
+    U2(
         .CLK(CLK),
         .RST_n(RST_n),
         .Tx_En_Sig(Tx_En_Sig),

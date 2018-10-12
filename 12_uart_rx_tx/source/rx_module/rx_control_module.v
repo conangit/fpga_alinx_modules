@@ -56,6 +56,7 @@ module rx_control_module(
         end
         else if (Rx_En_Sig) begin
             case (i)
+                
                 4'd0:   // 检测到开始传输信号
                 begin
                     if (H2L_Sig) begin
@@ -64,7 +65,7 @@ module rx_control_module(
                     end
                 end
                 
-                4'd1:   // 开始位
+                4'd1:   // 起始位
                 begin
                     if (BPS_CLK) begin
                         i <= i + 1'b1;
@@ -79,62 +80,27 @@ module rx_control_module(
                     end
                 end
                 
-                4'd10:   // 校验位
+                4'd10:   // 停止位
                 begin
                     if (BPS_CLK) begin
                         i <= i + 1'b1;
                     end
                 end
-
-                4'd11:   // 停止位
-                begin
-                    if (BPS_CLK) begin
-                        i <= i + 1'b1;
-                    end
-                end
-
-                /*
-                4'd12:   // 一帧数据采集完成
-                begin
-                    if (BPS_CLK) begin          // 此处一帧数据接收完成 完全没必要等待BPS_CLK信号
-                        i <= i + 1'b1;
-                        isCount <= 1'b0;
-                        isDone <= 1'b1;
-                    end
-                end
                 
-                4'd13:   // 一帧数据采集完成
-                begin
-                    if (BPS_CLK) begin          // 严重错误：此时一帧数据接收完成 isCount <= 1'b0;
-                        i <= 1'b0;
-                        isDone <= 1'b0;
-                    end
-                end
-                */
-                
-                4'd12:   // 一帧数据采集完成
+                4'd11:   // 一帧数据采集完成
                 begin
                     i <= i + 1'b1;
                     isCount <= 1'b0;
                     isDone <= 1'b1;
                 end
                 
-                4'd13:   // 回到初始态
+                4'd12:   // 回到初态
                 begin
                     i <= 1'b0;
                     isDone <= 1'b0;
                 end
                 
             endcase
-        end
-        else begin    // Rx_En_Sig无效时
-            // i <= 4'd0;
-            // isCount <= 1'b0;
-            // isDone <= 1'b0; 
-            // rData <= 8'd0;       // 应该让rx数据线上保持最后一帧接收的数据
-            /*
-             * Rx_En_Sig无效时 模块应该不工作 故不能添加此语句
-             */
         end
     end
     

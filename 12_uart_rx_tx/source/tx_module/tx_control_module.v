@@ -67,7 +67,7 @@ module tx_control_module(
                     end
                 end
                 
-                4'd9: // 校验位--什么也不做
+                4'd9: // 停止位
                 begin
                     if (BPS_CLK) begin
                         i <= i + 1'b1;
@@ -75,56 +75,19 @@ module tx_control_module(
                     end
                 end
                 
-                4'd10: // 停止位
-                begin
-                    if (BPS_CLK) begin
-                        i <= i + 1'b1;
-                        rTx <= 1'b1;
-                    end
-                end
-                
-                
-                /* 11 12情况 完全可以不等待BPS_CLK信号
-                 * 这里由于BPS_CLK信号的产生的使能信号为Tx_En_Sig控制，即使加上BPS_CLK也不会错
-                 * 严重区别于Rx模块
-                 *
-                 * 但是的但是：当Tx_En_Sig(BPS_CLK)信号受Tx_Done_Sig(isDone)信号影响时，又可能出错
-                 */
-                
-                /*
-                4'd11:
-                begin
-                    if (BPS_CLK) begin
-                        i <= i + 1'b1;
-                        isDone <= 1'b1;
-                    end
-                end
-
-                4'd12:
-                begin
-                    if (BPS_CLK) begin
-                        i <= 4'd0;
-                        isDone <= 1'b0;
-                    end
-                end
-                */
-                4'd11:
+                4'd10:
                 begin
                     i <= i + 1'b1;
                     isDone <= 1'b1;
                 end
 
-                4'd12:
+                4'd11:
                 begin
                     i <= 4'd0;
                     isDone <= 1'b0;
                 end
+                
             endcase
-        end
-        else begin
-            // i <= 4'd0;
-            // rTx <= 1'b1;
-            // isDone <= 1'b0;
         end
     end
 
