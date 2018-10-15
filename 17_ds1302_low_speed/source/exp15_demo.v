@@ -117,7 +117,7 @@ module exp15_demo
     begin
         if(!reset_in)
         begin
-            i <= 4'd0; //用于一直读取时间 输出到串口
+            i <= 4'd5; //用于一直读取时间 输出到串口
             isCount <= 1'b0;
             tx_en_sig <= 1'b0;
             tx_data <= 8'd0;
