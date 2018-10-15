@@ -1,0 +1,17 @@
+PROMGEN: Xilinx Prom Generator P.20131013
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+
+promgen -w -p mcs -c FF -o D:\Program\FPGA\fpga_alinx_modules\18_ds1302_debounce\source//read_rst -s 2048 -u 0000 D:/Program/FPGA/fpga_alinx_modules/18_ds1302_debounce/project/exp15_demo.bit -spi 
+
+PROM D:\Program\FPGA\fpga_alinx_modules\18_ds1302_debounce\source\read_rst.prm map: Mon Oct 15 22:03:44 2018
+
+Calculating PROM checksum with fill value ff
+
+Format        Mcs86 (32-bit)
+Size          2048K
+PROM start    0000:0000
+PROM end      001f:ffff
+PROM checksum 1abaf2fb
+
+        Addr1        Addr2                     Date File(s)
+    0000:0000    0005:327b     Oct 15 22:00:31 2018 D:/Program/FPGA/fpga_alinx_modules/18_ds1302_debounce/project/exp15_demo.bit

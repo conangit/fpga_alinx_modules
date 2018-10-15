@@ -117,7 +117,7 @@ module exp15_demo
     begin
         if(!reset_in)
         begin
-            i <= 4'd0; //用于一直读取时间 输出到串口
+            i <= 4'd5; //用于一直读取时间 输出到串口
             isCount <= 1'b0;
             tx_en_sig <= 1'b0;
             tx_data <= 8'd0;
@@ -172,78 +172,77 @@ module exp15_demo
                         cmd <= write_protect;
                         
                 5:
-                    if(cmd_done)
-                    begin
-                        i <= 6;
-                        cmd <= 8'd0;
-                    end
-                    else
-                        cmd <= read_hour;
-                        
-                6:
-                    if(tx_done)
-                    begin
-                        tx_en_sig <= 1'b0;
-                        i <= 7;
-                    end
-                    else
-                    begin
-                        tx_en_sig <= 1'b1;
-                        tx_data <= read_data;
-                    end
-                    
-                7:
-                    if(cmd_done)
-                    begin
-                        i <= 8;
-                        cmd <= 8'd0;
-                    end
-                    else
-                        cmd <= read_minit;
-                        
-                8:
-                    if(tx_done)
-                    begin
-                        tx_en_sig <= 1'b0;
-                        i <= 9;
-                    end
-                    else
-                    begin
-                        tx_en_sig <= 1'b1;
-                        tx_data <= read_data;
-                    end
-                    
-                9:
-                    if(cmd_done)
-                    begin
-                        i <= 10;
-                        cmd <= 8'd0;
-                    end
-                    else
-                        cmd <= read_second;
-                    
-                10:
-                    if(tx_done)
-                    begin
-                        tx_en_sig <= 1'b0;
-                        i <= 11;
-                    end
-                    else
-                    begin
-                        tx_en_sig <= 1'b1;
-                        tx_data <= read_data;
-                    end
-                    
-                    
-                11:
                     if(count == T1S)
                     begin
-                        i <= 5;
+                        i <= 6;
                         isCount <= 1'b0;
                     end
                     else
                         isCount <= 1'b1;
                         
+                6:
+                    if(cmd_done)
+                    begin
+                        i <= 7;
+                        cmd <= 8'd0;
+                    end
+                    else
+                        cmd <= read_hour;
+                        
+                7:
+                    if(tx_done)
+                    begin
+                        tx_en_sig <= 1'b0;
+                        i <= 8;
+                    end
+                    else
+                    begin
+                        tx_en_sig <= 1'b1;
+                        tx_data <= read_data;
+                    end
+                    
+                8:
+                    if(cmd_done)
+                    begin
+                        i <= 9;
+                        cmd <= 8'd0;
+                    end
+                    else
+                        cmd <= read_minit;
+                        
+                9:
+                    if(tx_done)
+                    begin
+                        tx_en_sig <= 1'b0;
+                        i <= 10;
+                    end
+                    else
+                    begin
+                        tx_en_sig <= 1'b1;
+                        tx_data <= read_data;
+                    end
+                    
+                10:
+                    if(cmd_done)
+                    begin
+                        i <= 11;
+                        cmd <= 8'd0;
+                    end
+                    else
+                        cmd <= read_second;
+                    
+                11:
+                    if(tx_done)
+                    begin
+                        tx_en_sig <= 1'b0;
+                        i <= 5;
+                    end
+                    else
+                    begin
+                        tx_en_sig <= 1'b1;
+                        tx_data <= read_data;
+                    end
+                    
                 default: i <= 5;
             endcase
         end
