@@ -62,9 +62,9 @@ module vga_interface
     (
         .clk(vga_clk),
         .rst_n(rst_n),
-        .write_en(),
-        .write_addr(),
-        .write_data(),
+        .write_en(write_en),
+        .write_addr(write_addr),
+        .write_data(write_data),
         .read_addr(ram_addr),
         .read_data(ram_data)
     );
