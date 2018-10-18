@@ -22,4 +22,5 @@
 23_beep_interface/project
 24_uart_interface/project
 25_ram16X16_vga_interface/project
+27_rtc_system/project
 
