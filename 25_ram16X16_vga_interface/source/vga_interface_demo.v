@@ -16,135 +16,202 @@ module vga_interface_demo
 
 
 
-    wire clk_vga;
-    wire clk_locked;
+    wire clk_25M;
+    wire clk_40M;
     
     pll_ip pll
     (
         .CLK_IN1(sysclk),       //50M
-        .CLK_OUT1(clk_vga),     //25.175M
-        .RESET(~rst_n),
-        .LOCKED(clk_locked)
+        .CLK_OUT1(clk_25M),     //25.175M
+        .CLK_OUT2(clk_40M),     //100MHz
+        .RESET(~rst_n)
     );
     
     
-    wire [6:0]rom_addr; //0~95
+    wire clk_out;
+    assign clk_out = clk_25M;
+    
+    /*******************************************/
+    
+    //125MHz
+    parameter T250MS = 25'd6_250_000;
+    //40MHz
+    // parameter T250MS = 25'd10_000_000;
+    
+    
+    reg [24:0] count;
+    reg isCount;
+    
+    always @(posedge clk_out or negedge rst_n)
+    begin
+        if(!rst_n)
+            count <= 25'd0;
+        else if(count == T250MS)
+            count <= 25'd0;
+        else if(isCount)
+            count <= count + 1'b1;
+        else
+            count <= 25'd0;
+    end
+    
+    /*******************************************/
+    
+    
+    reg isWrite;            //指示RAM写入
+    reg [6:0] Rom_Addr;     //根据ROM地址输出数据到RAM 0~95
     wire [15:0]rom_data;
     
     rom_ip rom
     (
-        .clka(clk_vga),
-        .addra(rom_addr),
+        .clka(clk_out),
+        .addra(Rom_Addr),
         .douta(rom_data)
     );
     
-    
-    wire write_en;
-    wire [3:0] write_addr;
-    wire [15:0] write_data;
     
     vga_interface vga
     (
         .rst_n(rst_n),
         //VGA signal
-        .vga_clk(clk_vga),
+        .vga_clk(clk_out),
         .VSYNC_Sig(VSYNC_Sig),
         .HSYNC_Sig(HSYNC_Sig),
         .Red_Sig(Red_Sig),
         .Green_Sig(Green_Sig),
         .Blue_Sig(Blue_Sig),
         //display source
-        .write_en(write_en),
-        .write_addr(write_addr),
-        .write_data(write_data)
+        .write_en(isWrite),
+        .write_addr(Rom_Addr[3:0]),
+        .write_data(rom_data)
     );
     
     /*******************************************/
     
-    //clk_vga 25MHz
-    parameter T250MS = 24'd6_250_000;
+    /*
+    reg [2:0] image_index;  //指示0~5幅图像
+    reg [4:0] addr_index;   //指示一幅图像地址变化
+    reg [6:0] rAddr;        //0 16 32 48 64 80
+    reg [3:0] i;
     
-    reg [23:0] count;
-    reg [3:0] image_index; //指示0~15幅图
-    always @(posedge clk_vga or negedge rst_n)
-    begin
-        if(!rst_n)
-        begin
-            count <= 24'd0;
-            image_index <= 4'd0;
-        end
-        else if(image_index == 4'd15)
-            image_index <= 4'd0;
-        else if(count == T250MS)
-        begin
-            count <= 24'd0;
-            image_index <= image_index + 1'b1;
-        end
-        else
-            count <= count + 1'b1;
-    end
-    
-    
-    reg [3:0] addr_index; //指示一幅图像地址变化
-    
-    always @(posedge clk_vga or negedge rst_n)
-    begin
-        if(!rst_n)
-            addr_index <= 4'd0;
-        else if(addr_index == 4'd15)
-            addr_index <= 4'd0;
-        else
-            addr_index <= addr_index + 1'b1;
-    end
-    
-    /*******************************************/
-    
-    reg isWrite;        //指示RAM写入
-    reg [3:0]Ram_Addr;  //指RAM写入地址
-    reg [6:0]Rom_Addr;  //指示RAM写入数据 -- 由ROM输出提供
-    reg i;
-    
-    always @(posedge clk_vga or negedge rst_n)
+    always @(posedge clk_out or negedge rst_n)
     begin
         if(!rst_n)
         begin
             isWrite <= 1'b0;
-            Ram_Addr <= 4'd0;
             Rom_Addr <= 7'd0;
-            i <= 1'b0;
+            image_index <= 3'd0;
+            addr_index <= 5'd0;
+            rAddr <= 7'd0;
+            isCount <= 1'b0;
+            i <= 4'd0;
         end
         else begin
             case(i)
             
                 0: //从ROM取得一幅图像数据写入RAM
-                if(addr_index == 4'd15)
+                if(addr_index == 5'd16)
+                begin
+                    addr_index <= 5'd0;
+                    isWrite <= 1'b0;
                     i <= 1;
+                end
                 else
                 begin
-                    isWrite <= 1'b1;                            //往RAM写入数据
-                    Ram_Addr <= addr_index;                     //写入RAM的地址 -- Ram_Addr(0~15)
-                    // Ram_Addr <= Rom_Addr[3:0];                  //一样的!!!!
-                    Rom_Addr <= addr_index + image_index << 4;  //写入的数据由ROM输出 -- Rom_Addr(0~15) + 16*(0~15)
+                    Rom_Addr <= {3'd0, addr_index} + rAddr;    //写入的数据由ROM输出 -- Rom_Addr(0~15) + 16*(0~15)
+                    addr_index <= addr_index + 1'b1;
+                    isWrite <= 1'b1;                           //往RAM写入数据
                 end
                 
-                1: //从RAM读取数据输出到VGA -- 每幅图像的停留时间250ms
+                1:
+                begin
+                    i <= 2;
+                    
+                    if(image_index == 3'd6)
+                        image_index <= 3'd0;
+                    else
+                        image_index <= image_index + 1'b1;
+                end
+                
+                2: //从RAM读取数据输出到VGA -- 每幅图像的停留时间250ms
                 if(count == T250MS) //image_index也将发生变化
+                begin
                     i <= 0;
+                    isCount <= 1'b0;
+                    rAddr <= image_index << 4;
+                end
                 else
-                    isWrite <= 1'b0;
-            
+                    isCount <= 1'b1;
+                    
+            endcase
+        end
+    end
+    */
+    
+    
+    reg [6:0] offset;        //0 16 32 48 64 80
+    reg [4:0] addr_index;   //指示一幅图像地址变化
+    reg [3:0] i;
+    
+    always @(posedge clk_out or negedge rst_n)
+    begin
+        if(!rst_n)
+            offset <= 7'd0;
+        else
+        begin
+            case(i)
+                0: offset <= 7'd0;
+                2: offset <= 7'd16;
+                4: offset <= 7'd32;
+                6: offset <= 7'd48;
+                8: offset <= 7'd64;
+                10: offset <= 7'd80;
             endcase
         end
     end
     
     
-    assign write_en = isWrite;
-    //rom_addr:0~95
-    assign rom_addr = Rom_Addr;
-    //ram_addr:0~15
-    assign write_addr = Ram_Addr;
-    //data
-    assign write_data = rom_data;
+    always @(posedge clk_out or negedge rst_n)
+    begin
+        if(!rst_n)
+        begin
+            isWrite <= 1'b0;
+            Rom_Addr <= 7'd0;
+            addr_index <= 5'd0;
+            isCount <= 1'b0;
+            i <= 4'd0;
+        end
+        else begin
+            case(i)
+            
+                0,2,4,6,8,10: //从ROM取得一幅图像数据写入RAM
+                if(addr_index == 5'd16)
+                begin
+                    addr_index <= 5'd0;
+                    isWrite <= 1'b0;
+                    i <= i + 1'b1;
+                end
+                else
+                begin
+                    Rom_Addr <= {3'd0, addr_index} + offset;
+                    addr_index <= addr_index + 1'b1;
+                    isWrite <= 1'b1; //往RAM写入数据
+                end
+                
+                1,3,5,7,9,11: //从RAM读取数据输出到VGA -- 每幅图像的停留时间250ms
+                if(count == T250MS)
+                begin
+                    i <= i + 1'b1;
+                    isCount <= 1'b0;
+                end
+                else
+                    isCount <= 1'b1;
+                
+                12: 
+                    i <= 0;
+
+            endcase
+        end
+    end
     
     
 endmodule
@@ -152,8 +219,12 @@ endmodule
 
 /*
 流程:
-
-
-
-
+（一） 写入第 0 副图像信息至 vga_interface.v ，延迟 250ms。
+（二） 写入第 1 副图像信息至 vga_interface.v ，延迟 250ms。
+（三） 写入第 2 副图像信息至 vga_interface.v ，延迟 250ms。
+（四） 写入第 3 副图像信息至 vga_interface.v ，延迟 250ms。
+（五） 写入第 4 副图像信息至 vga_interface.v ，延迟 250ms。
+（六） 写入第 5 副图像信息至 vga_interface.v ，延迟 250ms。
+（七） 重复执行步骤 1~6。
 */
+

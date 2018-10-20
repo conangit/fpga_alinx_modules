@@ -42,11 +42,12 @@ module vga_interface
     wire [11:0] y_addr;
     wire frame_sig;
     
-    wire [6:0] rom_addr;
-    wire [15:0] rom_data;
+    wire [6:0] ram_addr;
+    wire [15:0] ram_data;
     
     
-    vga_sync_module_640_480_60 u2(
+    vga_sync_module_640_480_60 u1
+    (
         .vga_clk(vga_clk),
         .rst_n(rst_n),
         .Ready_Sig(isReady),
@@ -57,6 +58,19 @@ module vga_interface
         .Row_Addr_Sig(y_addr)
     );
     
+    /*
+    vga_sync_module_800_600_60 u2
+    (
+        .vga_clk(vga_clk),
+        .rst_n(rst_n),
+        .Ready_Sig(isReady),
+        .HSYNC_Sig(HSYNC_Sig),
+        .VSYNC_Sig(VSYNC_Sig),
+        .Frame_Sig(frame_sig),
+        .Column_Addr_Sig(x_addr),
+        .Row_Addr_Sig(y_addr)
+    );
+    */
     
     ram16X16 u3
     (

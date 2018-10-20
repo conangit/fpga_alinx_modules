@@ -57,14 +57,28 @@ module vga_control_module
             x <= 4'd0;
     end
     
+    
+    //显示区域
+    reg isImage;
+    
+    always @(posedge vga_clk or negedge rst_n) begin
+        if(!rst_n) begin
+            isImage <= 1'd0;
+        end
+        else if(Row_Addr_Sig >= 0 && Row_Addr_Sig <= 15 && Column_Addr_Sig >= 0 && Column_Addr_Sig <= 15)
+            isImage <= 1'd1;
+        else
+            isImage <= 1'd0;
+    end
+    
     /*********************************/
     
     assign ram_addr = y;
     
     //对RAM写入时,RAM存储的信息高位在前
-    assign Red_Sig   = Ready_Sig ? {5{ram_data[4'd15-x]}} : {5{1'b0}};
-    assign Green_Sig = Ready_Sig ? {6{ram_data[4'd15-x]}} : {6{1'b0}};
-    assign Blue_Sig  = Ready_Sig ? {5{ram_data[4'd15-x]}} : {5{1'b0}};
+    assign Red_Sig   = Ready_Sig && isImage ? {5{ram_data[4'd15-x]}} : {5{1'b0}};
+    assign Green_Sig = Ready_Sig && isImage ? {6{ram_data[4'd15-x]}} : {6{1'b0}};
+    assign Blue_Sig  = Ready_Sig && isImage ? {5{ram_data[4'd15-x]}} : {5{1'b0}};
     
     
 endmodule

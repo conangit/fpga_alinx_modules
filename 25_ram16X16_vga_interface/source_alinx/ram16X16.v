@@ -25,7 +25,6 @@ module ram16X16
     /***********************************/
     
     /*
-    //Error
     output reg [15:0] read_data;
     
     reg [15:0] RAM [15:0];
