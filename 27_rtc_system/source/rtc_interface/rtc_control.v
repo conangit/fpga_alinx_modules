@@ -238,6 +238,7 @@ module rtc_control
                     begin
                         i <= 14;
                         cmd_sig <= 8'd0;
+                        temp <= hour; //这点很重要--默认进入配置小时 如不按键 将会把temp赋给hour
                     end
                     else
                     begin
@@ -264,7 +265,10 @@ module rtc_control
                         temp <= hour;
                     end
                     else if(rtc_config[0]) //循环操作
+                    begin
                         i <= 15;
+                        temp <= minute;
+                    end
                     else
                         hour <= temp; //将作用结果反馈回hour寄存器
                 end
@@ -287,7 +291,10 @@ module rtc_control
                         temp <= minute;
                     end
                     else if(rtc_config[0]) //循环操作
+                    begin
                         i <= 16;
+                        temp <= second;
+                    end
                     else
                         minute <= temp;
                 end
@@ -310,7 +317,10 @@ module rtc_control
                         temp <= second;
                     end
                     else if(rtc_config[0]) //循环操作
+                    begin
                         i <= 14;
+                        temp <= hour;
+                    end
                     else
                         second <= temp;
                 end

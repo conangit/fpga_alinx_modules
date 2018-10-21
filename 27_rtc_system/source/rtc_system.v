@@ -13,20 +13,14 @@ module rtc_system
 
     //digital
     output [7:0] smg_data,
-    output [5:0] scan_sig
+    output [5:0] scan_sig,
+    
+    //index configuration
+    output config_sig
 );
 
     wire [3:0] key_out;
-    
-    wire [3:0] rtc_config;
     wire [23:0] rtc_time;
-    wire config_sig;
-    
-    wire [23:0] number_sig;
-    
-    
-    assign key_out = rtc_config;
-    assign rtc_time = number_sig;
     
     
     keys_interface u1
@@ -42,7 +36,7 @@ module rtc_system
     (
         .clk(clk),
         .rst_n(rst_n),
-        .rtc_config(rtc_config),
+        .rtc_config(key_out),
         .rtc_time(rtc_time),
         .rtc_sclk(rtc_sclk),
         .rtc_rst(rtc_rst),
@@ -55,7 +49,7 @@ module rtc_system
     (
         .clk(clk),
         .rst_n(rst_n),
-        .number_sig(number_sig),
+        .number_sig(rtc_time),
         .smg_data(smg_data),
         .scan_sig(scan_sig)
     );
